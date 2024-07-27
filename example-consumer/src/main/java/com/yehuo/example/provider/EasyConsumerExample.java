@@ -6,10 +6,9 @@ import com.yehuo.example.common.service.UserService;
 import com.yehuo.proxy.ServiceProxyFactory;
 import com.yehuo.utils.ConfigUtils;
 
-import java.io.IOException;
 
 public class EasyConsumerExample {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         RpcConfig rpc = ConfigUtils.loadConfig(RpcConfig.class, "rpc");
         System.out.println(rpc.toString());
