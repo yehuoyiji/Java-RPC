@@ -7,6 +7,11 @@ import lombok.Data;
 public class RpcConfig {
 
     /**
+     * 是否开启mock模式 (模拟调用)
+     */
+    private boolean mock = false;
+
+    /**
      * 名称
      */
     private String name = "yehuo-rpc";

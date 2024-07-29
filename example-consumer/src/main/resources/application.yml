@@ -1,0 +1,5 @@
+rpc:
+  name: yehuo-rpc
+  version: 2.0.0
+  serverPort: 8085
+  mock: true

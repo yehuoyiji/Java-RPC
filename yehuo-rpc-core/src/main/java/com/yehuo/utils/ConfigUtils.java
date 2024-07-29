@@ -15,6 +15,8 @@ public class ConfigUtils {
      * @param <T>
      */
 
+
+
     public static <T> T loadConfig(Class<T> tClass, String prefix) {
         return loadConfig(tClass, prefix, "");
     }
@@ -33,7 +35,6 @@ public class ConfigUtils {
         if (StrUtil.isNotBlank(environment)) {
             configFileBuilder.append("-").append(environment);
         }
-
         String[] fileExtensions = {".yml", ".yaml", ".properties"};
         Props props = null;
 
@@ -48,7 +49,10 @@ public class ConfigUtils {
                 configFileBuilder.setLength(configFileBuilder.length() - extension.length()); // 移除当前尝试的扩展名
             }
         }
-        return props.toBean(tClass, prefix);
+        if (configFileBuilder.toString().endsWith(".properties")) {
+            return props.toBean(tClass, prefix);
+        }else {
+            return props.toBean(tClass);
+        }
     }
-
 }
