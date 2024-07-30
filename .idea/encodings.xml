@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/yehuo-rpc-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/yehuo-rpc-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yehuo-rpc-core/src/main/resources/META-INF/rpc/system/com.yehuo.serializer.Serializer" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/yu-rpc-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/yu-rpc-core/src/main/resources" charset="UTF-8" />
   </component>

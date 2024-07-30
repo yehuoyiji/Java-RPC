@@ -1,6 +1,7 @@
 package com.yehuo.config;
 
 
+import com.yehuo.serializer.SerializerKeys;
 import lombok.Data;
 
 @Data
@@ -30,5 +31,10 @@ public class RpcConfig {
      * 服务端口号
      */
     private int serverPort = 8080;
+
+    /**
+     * 序列化器
+     */
+    private String serializer = SerializerKeys.JDK;
 
 }
