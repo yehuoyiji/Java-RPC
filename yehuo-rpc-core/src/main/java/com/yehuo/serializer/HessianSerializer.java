@@ -10,8 +10,8 @@ import java.io.IOException;
 /**
  * Hessian 序列化器
  *
-
  */
+
 public class HessianSerializer implements Serializer {
     @Override
     public <T> byte[] serialize(T object) throws IOException {

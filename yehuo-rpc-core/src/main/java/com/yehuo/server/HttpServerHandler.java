@@ -1,10 +1,13 @@
 package com.yehuo.server;
 
+import com.yehuo.RpcApplication;
 import com.yehuo.model.RpcRequest;
 import com.yehuo.model.RpcResponse;
 import com.yehuo.register.LocalRegistry;
 import com.yehuo.serializer.JdkSerializer;
+import com.yehuo.serializer.JsonSerializer;
 import com.yehuo.serializer.Serializer;
+import com.yehuo.serializer.SerializerFactory;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -22,7 +25,7 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
     @Override
     public void handle(HttpServerRequest httpServerRequest) {
         // 指定序列化器
-        final Serializer serializer = new JdkSerializer();
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 记录日志
         System.out.println("收到的请求：" + httpServerRequest.method() + " " + httpServerRequest.uri());

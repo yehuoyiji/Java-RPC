@@ -35,7 +35,7 @@ public class ConfigUtils {
         if (StrUtil.isNotBlank(environment)) {
             configFileBuilder.append("-").append(environment);
         }
-        String[] fileExtensions = {".yml", ".yaml", ".properties"};
+        String[] fileExtensions = {".properties",".yml", ".yaml", };
         Props props = null;
 
         for (String extension : fileExtensions) {
