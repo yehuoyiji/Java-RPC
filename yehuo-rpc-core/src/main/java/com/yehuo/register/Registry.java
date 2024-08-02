@@ -53,4 +53,10 @@ public interface Registry {
      * 心跳检测（服务端）
      */
     void heartBeat();
+
+    /**
+     * 监听服务注册信息 ==> 以便及时更新缓存 （客户端进行监听）
+     * @param serviceNodeKey
+     */
+    void watch(String serviceNodeKey);
 }
