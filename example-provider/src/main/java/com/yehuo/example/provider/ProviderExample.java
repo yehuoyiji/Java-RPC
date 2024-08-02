@@ -11,6 +11,7 @@ import com.yehuo.register.Registry;
 import com.yehuo.register.RegistryFactory;
 import com.yehuo.server.HttpServer;
 import com.yehuo.server.VertxHttpServer;
+import com.yehuo.server.tcp.VertxTcpServer;
 
 
 /**
