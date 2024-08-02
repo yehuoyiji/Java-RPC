@@ -1,1 +1,3 @@
 etcd=com.yehuo.register.EtcdRegistry
+zookeeper=com.yehuo.register.ZooKeeperRegistry
+
