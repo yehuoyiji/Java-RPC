@@ -15,6 +15,7 @@ import com.yehuo.register.Registry;
 import com.yehuo.register.RegistryFactory;
 import com.yehuo.serializer.Serializer;
 import com.yehuo.serializer.SerializerFactory;
+import com.yehuo.server.tcp.VertxTcpClient;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetClient;
@@ -80,50 +81,52 @@ public class ServiceProxy implements InvocationHandler {
 //            }
 
             // 发送TCP请求
-            Vertx vertx = Vertx.vertx();
-            NetClient netClient = vertx.createNetClient();
-            CompletableFuture<RpcResponse> responseFuture = new CompletableFuture<>();
-            netClient.connect(selectedServiceMetaInfo.getServicePort(), selectedServiceMetaInfo.getServiceHost(),
-                    result -> {
-                        if (result.succeeded()) {
-                            System.out.println("TCP建立连接成功");
-                            NetSocket socket = result.result();
-                            // 发送数据
-                            // 构造消息
-                            ProtocolMessage<RpcRequest> protocolMessage = new ProtocolMessage<>();
-                            ProtocolMessage.Header header = new ProtocolMessage.Header();
-                            header.setMagic(ProtocolConstant.PROTOCOL_MAGIC);
-                            header.setVersion(ProtocolConstant.PROTOCOL_VERSION);
-                            header.setSerializer((byte) ProtocolMessageSerializerEnum.getEnumByValue(rpcConfig.getSerializer()).getKey());
-                            header.setType((byte)ProtocolMessageTypeEnum.REQUEST.getKey());
-                            header.setRequestId(IdUtil.getSnowflakeNextId());
-                            protocolMessage.setHeader(header);
-                            protocolMessage.setBody(rpcRequest);
-                            // 编码请求
-                            try{
-                                Buffer encode = ProtocolMessageEncoder.encode(protocolMessage);
-                                socket.write(encode);
-                            }catch (IOException e) {
-                                throw new RuntimeException("协议消息编码错误");
-                            }
-
-                            // 接收响应
-                            socket.handler(buffer -> {
-                                try {
-                                    ProtocolMessage<RpcResponse> decode = (ProtocolMessage<RpcResponse>) ProtocolMessageDecoder.decode(buffer);
-                                    responseFuture.complete(decode.getBody());
-                                }catch (IOException e) {
-                                    throw new RuntimeException("协议消息解码错误");
-                                }
-                            });
-                        }else {
-                            System.out.println("TCP建立连接失败");
-                        }
-                    });
-            RpcResponse rpcResponse = responseFuture.get();
-            // 关闭TCP连接
-            netClient.close();
-            System.out.println(rpcResponse.getData());
+//            Vertx vertx = Vertx.vertx();
+//            NetClient netClient = vertx.createNetClient();
+//            CompletableFuture<RpcResponse> responseFuture = new CompletableFuture<>();
+//            netClient.connect(selectedServiceMetaInfo.getServicePort(), selectedServiceMetaInfo.getServiceHost(),
+//                    result -> {
+//                        if (result.succeeded()) {
+//                            System.out.println("TCP建立连接成功");
+//                            NetSocket socket = result.result();
+//                            // 发送数据
+//                            // 构造消息
+//                            ProtocolMessage<RpcRequest> protocolMessage = new ProtocolMessage<>();
+//                            ProtocolMessage.Header header = new ProtocolMessage.Header();
+//                            header.setMagic(ProtocolConstant.PROTOCOL_MAGIC);
+//                            header.setVersion(ProtocolConstant.PROTOCOL_VERSION);
+//                            header.setSerializer((byte) ProtocolMessageSerializerEnum.getEnumByValue(rpcConfig.getSerializer()).getKey());
+//                            header.setType((byte)ProtocolMessageTypeEnum.REQUEST.getKey());
+//                            header.setRequestId(IdUtil.getSnowflakeNextId());
+//                            protocolMessage.setHeader(header);
+//                            protocolMessage.setBody(rpcRequest);
+//                            // 编码请求
+//                            try{
+//                                Buffer encode = ProtocolMessageEncoder.encode(protocolMessage);
+//                                socket.write(encode);
+//                            }catch (IOException e) {
+//                                throw new RuntimeException("协议消息编码错误");
+//                            }
+//
+//                            // 接收响应
+//                            socket.handler(buffer -> {
+//                                try {
+//                                    ProtocolMessage<RpcResponse> decode = (ProtocolMessage<RpcResponse>) ProtocolMessageDecoder.decode(buffer);
+//                                    responseFuture.complete(decode.getBody());
+//                                }catch (IOException e) {
+//                                    throw new RuntimeException("协议消息解码错误");
+//                                }
+//                            });
+//                        }else {
+//                            System.out.println("TCP建立连接失败");
+//                        }
+//                    });
+//            RpcResponse rpcResponse = responseFuture.get();
+//            // 关闭TCP连接
+//            netClient.close();
+//            System.out.println(rpcResponse.getData());
+//            return rpcResponse.getData();
+            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
             return rpcResponse.getData();
         } catch (IOException e) {
             e.printStackTrace();

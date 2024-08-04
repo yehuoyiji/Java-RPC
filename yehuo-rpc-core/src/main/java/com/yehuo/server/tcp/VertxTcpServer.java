@@ -1,10 +1,13 @@
 package com.yehuo.server.tcp;
 
 
+import com.yehuo.protocol.ProtocolMessageDecoder;
 import com.yehuo.server.HttpServer;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetServer;
+
+import java.io.IOException;
 
 public class VertxTcpServer implements HttpServer {
 
@@ -24,7 +27,7 @@ public class VertxTcpServer implements HttpServer {
         NetServer server = vertx.createNetServer();
         // 处理请求
         server.connectHandler(new TcpServerHandler());
-
+//
 //        server.connectHandler(socket -> {
 //            // 处理连接
 //            socket.handler(buffer -> {
@@ -34,13 +37,42 @@ public class VertxTcpServer implements HttpServer {
 //                byte[] responseData = handleRequest(requestData);
 //                // 发送响应
 //                socket.write(Buffer.buffer(responseData));
+
+
+//                String testMessage = "Hello, server!Hello, server!Hello, server!";
+//                int messageLength = testMessage.length();
+//                if(buffer.getBytes().length < messageLength) {
+//                    try {
+//                        System.out.println("半包， length=" + ProtocolMessageDecoder.decode(buffer) + "/n");
+//                    } catch (IOException e) {
+//
+//                    }
+//                    return;
+//                }
+//                if (buffer.getBytes().length == messageLength) {
+//                    try {
+//                        System.out.println("完整包， length=" + ProtocolMessageDecoder.decode(buffer) + "/n");
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    socket.write(Buffer.buffer(testMessage));
+//                }
+//                if (buffer.getBytes().length > messageLength) {
+//                    try {
+//                        System.out.println("粘包， length=" + ProtocolMessageDecoder.decode(buffer) + "/n");
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    socket.write(Buffer.buffer(testMessage));
+//                }
+
 //            });
 //        });
 
         // 启动 TCP 服务器并监听指定端口
         server.listen(port, result -> {
             if (result.succeeded()) {
-                System.out.println("TCP server started on port " + port);
+                System.out.println("TCP server started on port,监听端口： " + port);
             } else {
                 System.err.println("Failed to start TCP server: " + result.cause());
             }
