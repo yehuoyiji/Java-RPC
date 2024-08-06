@@ -1,6 +1,7 @@
 package com.yehuo.config;
 
 
+import com.yehuo.loadbalancer.LoadBalanceKeys;
 import com.yehuo.serializer.SerializerKeys;
 import lombok.Data;
 
@@ -42,4 +43,8 @@ public class RpcConfig {
      */
     private RegistryConfig registryConfig = new RegistryConfig();
 
+    /**
+     * 负载均衡器
+     */
+    private String loadBalancer = LoadBalanceKeys.CONSISTENT_HASH;
 }
