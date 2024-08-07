@@ -1,0 +1,2 @@
+no=com.yehuo.fault.retry.NoRetryStrategy
+fixedInterval=com.yehuo.fault.retry.FixedIntervalRetryStrategy

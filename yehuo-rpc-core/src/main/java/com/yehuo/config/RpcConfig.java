@@ -1,6 +1,7 @@
 package com.yehuo.config;
 
 
+import com.yehuo.fault.retry.RetryStrategyKeys;
 import com.yehuo.loadbalancer.LoadBalanceKeys;
 import com.yehuo.serializer.SerializerKeys;
 import lombok.Data;
@@ -47,4 +48,9 @@ public class RpcConfig {
      * 负载均衡器
      */
     private String loadBalancer = LoadBalanceKeys.CONSISTENT_HASH;
+
+    /**
+     * 重试策略 —— 默认不重试
+     */
+    private String retryStrategy = RetryStrategyKeys.FIXED_INTERVAL;
 }

@@ -7,6 +7,8 @@ import cn.hutool.http.HttpResponse;
 import com.yehuo.RpcApplication;
 import com.yehuo.config.RpcConfig;
 import com.yehuo.constant.RpcConstant;
+import com.yehuo.fault.retry.RetryStrategy;
+import com.yehuo.fault.retry.RetryStrategyFactory;
 import com.yehuo.loadbalancer.LoadBalancer;
 import com.yehuo.loadbalancer.LoadBalancerFactory;
 import com.yehuo.model.RpcRequest;
@@ -136,7 +138,11 @@ public class ServiceProxy implements InvocationHandler {
 //            netClient.close();
 //            System.out.println(rpcResponse.getData());
 //            return rpcResponse.getData();
-            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
+//            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
+            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
+                    VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
+            );
             return rpcResponse.getData();
         } catch (IOException e) {
             e.printStackTrace();
