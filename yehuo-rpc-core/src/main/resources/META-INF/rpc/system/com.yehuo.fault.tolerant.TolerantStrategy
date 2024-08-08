@@ -1,0 +1,4 @@
+failBack=com.yehuo.fault.tolerant.FailBackTolerantStrategy
+failFast=com.yehuo.fault.tolerant.FailFastTolerantStrategy
+failOver=com.yehuo.fault.tolerant.FailOverTolerantStrategy
+failSafe=com.yehuo.fault.tolerant.FailSafeTolerantStrategy

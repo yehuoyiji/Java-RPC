@@ -9,6 +9,8 @@ import com.yehuo.config.RpcConfig;
 import com.yehuo.constant.RpcConstant;
 import com.yehuo.fault.retry.RetryStrategy;
 import com.yehuo.fault.retry.RetryStrategyFactory;
+import com.yehuo.fault.tolerant.TolerantStrategy;
+import com.yehuo.fault.tolerant.TolerantStrategyFactory;
 import com.yehuo.loadbalancer.LoadBalancer;
 import com.yehuo.loadbalancer.LoadBalancerFactory;
 import com.yehuo.model.RpcRequest;
@@ -139,10 +141,17 @@ public class ServiceProxy implements InvocationHandler {
 //            System.out.println(rpcResponse.getData());
 //            return rpcResponse.getData();
 //            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
-            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
-            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
-                    VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
-            );
+            RpcResponse rpcResponse;
+            try {
+                RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+                rpcResponse = retryStrategy.doRetry(() ->
+                        VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
+                );
+            }catch (Exception e){
+                TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getInstance(rpcConfig.getTolerantStrategy());
+                rpcResponse = tolerantStrategy.doTolerant(null, e);
+            }
+
             return rpcResponse.getData();
         } catch (IOException e) {
             e.printStackTrace();

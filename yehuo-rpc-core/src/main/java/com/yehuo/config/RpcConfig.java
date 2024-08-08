@@ -2,6 +2,7 @@ package com.yehuo.config;
 
 
 import com.yehuo.fault.retry.RetryStrategyKeys;
+import com.yehuo.fault.tolerant.TolerantStrategyKeys;
 import com.yehuo.loadbalancer.LoadBalanceKeys;
 import com.yehuo.serializer.SerializerKeys;
 import lombok.Data;
@@ -53,4 +54,9 @@ public class RpcConfig {
      * 重试策略 —— 默认不重试
      */
     private String retryStrategy = RetryStrategyKeys.FIXED_INTERVAL;
+
+    /**
+     * 容错策略 —— 默认快速失败
+     */
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
 }
